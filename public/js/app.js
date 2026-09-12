@@ -43,12 +43,14 @@ formAgregar.addEventListener('submit', async (evento) => {
     body: JSON.stringify(nuevoVideojuego)
   });
 
+  const datos = await respuesta.json();
+
   if (respuesta.ok) {
     mensajeAgregar.textContent = 'Videojuego agregado con exito.';
     formAgregar.reset();
     cargarVideojuegos(); // Volvemos a pedir la lista actualizada: esto se ve "en vivo"
   } else {
-    mensajeAgregar.textContent = 'Ocurrio un error al agregar el videojuego.';
+    mensajeAgregar.textContent = 'Errores: ' + datos.errores.join(' ');
   }
 });
 

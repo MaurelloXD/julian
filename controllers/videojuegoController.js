@@ -13,9 +13,33 @@ function obtenerVideojuegos(peticion, respuesta) {
   respuesta.json(videojuegos);
 }
 
+// Categorias permitidas en la tienda.
+const CATEGORIAS_VALIDAS = ['Aventura', 'Plataformas', 'Accion', 'Deportes', 'Estrategia', 'Deportivo'];
+
 // POST /api/videojuegos
+//
+// NOTA PEDAGOGICA (a proposito, temporal):
+// Esta funcion esta haciendo DOS cosas a la vez: validar los datos
+// Y coordinar la creacion del videojuego. Mas adelante, en el commit
+// de "Aplicar SRP", vamos a separar la validacion en su propio modulo.
+// Por ahora, dejemoslo asi para poder mostrar el "antes" en clase.
 function crearVideojuego(peticion, respuesta) {
   const { nombre, precio, categoria } = peticion.body;
+  const errores = [];
+
+  if (!nombre || nombre.trim() === '') {
+    errores.push('El nombre no puede estar vacio.');
+  }
+  if (precio === undefined || Number(precio) <= 0 || isNaN(Number(precio))) {
+    errores.push('El precio debe ser un numero mayor que cero.');
+  }
+  if (!categoria || !CATEGORIAS_VALIDAS.includes(categoria)) {
+    errores.push(`La categoria debe ser una de: ${CATEGORIAS_VALIDAS.join(', ')}.`);
+  }
+
+  if (errores.length > 0) {
+    return respuesta.status(400).json({ errores });
+  }
 
   const nuevoVideojuego = videojuegoModel.crear({
     nombre,

@@ -1,30 +1,19 @@
 // models/videojuegoModel.js
 //
-// El MODEL se encarga UNICAMENTE de los datos:
-// leerlos, guardarlos y aplicar las reglas relacionadas con ellos.
-// No sabe nada de HTML, ni de peticiones HTTP: eso es trabajo de otras capas.
+// El MODEL contiene la LOGICA DE NEGOCIO: reglas de creacion, busqueda,
+// ordenamiento y estadisticas. Para leer y guardar los datos, ya NO usa
+// fs directamente: le delega esa tarea al Repository (patron Repository).
+// Asi, el Model se concentra en el "que" (las reglas) y el Repository
+// en el "como" (donde y de que forma se guardan los datos).
 
-const fs = require('fs');
-const path = require('path');
+const videojuegoRepository = require('../repositories/videojuegoRepository');
 
-const RUTA_DATOS = path.join(__dirname, '..', 'data', 'videojuegos.json');
-
-// Lee todos los videojuegos desde el archivo JSON.
 function obtenerTodos() {
-  const contenido = fs.readFileSync(RUTA_DATOS, 'utf-8');
-  return JSON.parse(contenido);
+  return videojuegoRepository.obtenerTodos();
 }
 
-// Guarda la lista completa de videojuegos en el archivo JSON.
-// Gracias a esto, los cambios (agregar un juego, por ejemplo)
-// NO se pierden si el servidor se reinicia.
-function guardarTodos(videojuegos) {
-  fs.writeFileSync(RUTA_DATOS, JSON.stringify(videojuegos, null, 2), 'utf-8');
-}
-
-// Crea un nuevo videojuego y lo agrega a la coleccion.
 function crear(nuevoVideojuego) {
-  const videojuegos = obtenerTodos();
+  const videojuegos = videojuegoRepository.obtenerTodos();
   const nuevoId = videojuegos.length > 0
     ? Math.max(...videojuegos.map(v => v.id)) + 1
     : 1;
@@ -37,7 +26,7 @@ function crear(nuevoVideojuego) {
   };
 
   videojuegos.push(videojuego);
-  guardarTodos(videojuegos);
+  videojuegoRepository.guardarTodos(videojuegos);
   return videojuego;
 }
 
@@ -121,8 +110,7 @@ function ordenarPorPrecio(orden = 'asc') {
 
 // ALGORITMO DE PROCESAMIENTO Y AGREGACION
 // Recorre la coleccion UNA sola vez, acumulando total, y llevando el
-// registro del maximo y el minimo a medida que avanza. No hace falta
-// recorrer la lista varias veces para cada dato.
+// registro del maximo y el minimo a medida que avanza.
 function calcularEstadisticas() {
   const videojuegos = obtenerTodos();
 
@@ -150,7 +138,6 @@ function calcularEstadisticas() {
 
 module.exports = {
   obtenerTodos,
-  guardarTodos,
   crear,
   buscarLineal,
   buscarBinaria,

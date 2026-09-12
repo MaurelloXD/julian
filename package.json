@@ -1,0 +1,15 @@
+{
+  "name": "tienda-videojuegos-mvc",
+  "version": "1.0.0",
+  "description": "Proyecto educativo: tienda de videojuegos construida con arquitectura MVC para aprender Back-End, algoritmos y buenas practicas de diseno.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["educativo", "mvc", "express", "sena"],
+  "author": "SENA - Analisis y Desarrollo de Software",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

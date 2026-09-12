@@ -10,6 +10,7 @@ const videojuegoController = require('../controllers/videojuegoController');
 
 router.get('/videojuegos', videojuegoController.obtenerVideojuegos);
 router.get('/videojuegos/buscar', videojuegoController.buscarVideojuego);
+router.get('/videojuegos/ordenar', videojuegoController.ordenarVideojuegos);
 router.post('/videojuegos', videojuegoController.crearVideojuego);
 
 module.exports = router;

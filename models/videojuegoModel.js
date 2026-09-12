@@ -87,10 +87,43 @@ function buscarBinaria(nombreBuscado) {
   return { resultado: null, comparaciones };
 }
 
+// ALGORITMO DE ORDENAMIENTO DE BURBUJA
+// Compara elementos adyacentes y los intercambia si estan en el orden
+// incorrecto. Repite el recorrido hasta que ya no hay intercambios
+// (bandera "huboIntercambio"), lo que evita pasadas innecesarias.
+//
+// orden: 'asc' (ascendente) o 'desc' (descendente).
+function ordenarPorPrecio(orden = 'asc') {
+  const videojuegos = [...obtenerTodos()]; // copia, no modificamos el original
+  const n = videojuegos.length;
+
+  for (let i = 0; i < n - 1; i++) {
+    let huboIntercambio = false;
+
+    for (let j = 0; j < n - 1 - i; j++) {
+      const debeIntercambiar = orden === 'asc'
+        ? videojuegos[j].precio > videojuegos[j + 1].precio
+        : videojuegos[j].precio < videojuegos[j + 1].precio;
+
+      if (debeIntercambiar) {
+        const temporal = videojuegos[j];
+        videojuegos[j] = videojuegos[j + 1];
+        videojuegos[j + 1] = temporal;
+        huboIntercambio = true;
+      }
+    }
+
+    if (!huboIntercambio) break; // ya esta ordenado: no seguimos comparando
+  }
+
+  return videojuegos;
+}
+
 module.exports = {
   obtenerTodos,
   guardarTodos,
   crear,
   buscarLineal,
-  buscarBinaria
+  buscarBinaria,
+  ordenarPorPrecio
 };

@@ -72,5 +72,15 @@ formBuscar.addEventListener('submit', async (evento) => {
   }
 });
 
+// --- Ordenamiento ---
+async function ordenarPorPrecio(orden) {
+  const respuesta = await fetch(`/api/videojuegos/ordenar?orden=${orden}`);
+  const videojuegos = await respuesta.json();
+  renderizarVideojuegos(videojuegos);
+}
+
+document.getElementById('btn-orden-asc').addEventListener('click', () => ordenarPorPrecio('asc'));
+document.getElementById('btn-orden-desc').addEventListener('click', () => ordenarPorPrecio('desc'));
+
 // Al cargar la pagina por primera vez, pedimos los videojuegos.
 cargarVideojuegos();

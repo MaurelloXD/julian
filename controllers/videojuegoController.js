@@ -48,8 +48,16 @@ function buscarVideojuego(peticion, respuesta) {
   });
 }
 
+// GET /api/videojuegos/ordenar?orden=asc  (o orden=desc)
+function ordenarVideojuegos(peticion, respuesta) {
+  const { orden } = peticion.query;
+  const videojuegosOrdenados = videojuegoModel.ordenarPorPrecio(orden === 'desc' ? 'desc' : 'asc');
+  respuesta.json(videojuegosOrdenados);
+}
+
 module.exports = {
   obtenerVideojuegos,
   crearVideojuego,
-  buscarVideojuego
+  buscarVideojuego,
+  ordenarVideojuegos
 };

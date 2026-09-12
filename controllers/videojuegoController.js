@@ -26,7 +26,30 @@ function crearVideojuego(peticion, respuesta) {
   respuesta.status(201).json(nuevoVideojuego);
 }
 
+// GET /api/videojuegos/buscar?nombre=Minecraft
+// Ejecuta AMBAS busquedas sobre el mismo nombre y devuelve cuantas
+// comparaciones hizo cada una, para poder compararlas en clase.
+function buscarVideojuego(peticion, respuesta) {
+  const { nombre } = peticion.query;
+
+  if (!nombre) {
+    return respuesta.status(400).json({ error: 'Debes indicar un nombre para buscar.' });
+  }
+
+  const porLineal = videojuegoModel.buscarLineal(nombre);
+  const porBinaria = videojuegoModel.buscarBinaria(nombre);
+
+  respuesta.json({
+    encontrado: porLineal.resultado,
+    comparaciones: {
+      lineal: porLineal.comparaciones,
+      binaria: porBinaria.comparaciones
+    }
+  });
+}
+
 module.exports = {
   obtenerVideojuegos,
-  crearVideojuego
+  crearVideojuego,
+  buscarVideojuego
 };

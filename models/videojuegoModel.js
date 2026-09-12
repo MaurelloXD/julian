@@ -41,8 +41,56 @@ function crear(nuevoVideojuego) {
   return videojuego;
 }
 
+// ALGORITMO DE BUSQUEDA LINEAL
+// Recorre la lista elemento por elemento, uno a uno, hasta encontrar
+// una coincidencia. Funciona sin importar el orden de la lista, pero
+// en el peor caso revisa TODOS los elementos.
+function buscarLineal(nombreBuscado) {
+  const videojuegos = obtenerTodos();
+  const nombreNormalizado = nombreBuscado.toLowerCase();
+  let comparaciones = 0;
+
+  for (let i = 0; i < videojuegos.length; i++) {
+    comparaciones++;
+    if (videojuegos[i].nombre.toLowerCase() === nombreNormalizado) {
+      return { resultado: videojuegos[i], comparaciones };
+    }
+  }
+  return { resultado: null, comparaciones };
+}
+
+// ALGORITMO DE BUSQUEDA BINARIA
+// Requiere que la lista este ORDENADA (aqui, por nombre). En cada paso
+// descarta la mitad de los elementos restantes, por eso es mucho mas
+// rapida que la lineal cuando hay muchos datos.
+function buscarBinaria(nombreBuscado) {
+  const videojuegos = [...obtenerTodos()].sort((a, b) => a.nombre.localeCompare(b.nombre));
+  const nombreNormalizado = nombreBuscado.toLowerCase();
+
+  let inicio = 0;
+  let fin = videojuegos.length - 1;
+  let comparaciones = 0;
+
+  while (inicio <= fin) {
+    const medio = Math.floor((inicio + fin) / 2);
+    const nombreMedio = videojuegos[medio].nombre.toLowerCase();
+    comparaciones++;
+
+    if (nombreMedio === nombreNormalizado) {
+      return { resultado: videojuegos[medio], comparaciones };
+    } else if (nombreMedio < nombreNormalizado) {
+      inicio = medio + 1;
+    } else {
+      fin = medio - 1;
+    }
+  }
+  return { resultado: null, comparaciones };
+}
+
 module.exports = {
   obtenerTodos,
   guardarTodos,
-  crear
+  crear,
+  buscarLineal,
+  buscarBinaria
 };

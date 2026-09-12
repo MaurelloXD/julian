@@ -9,6 +9,7 @@ const router = express.Router();
 const videojuegoController = require('../controllers/videojuegoController');
 
 router.get('/videojuegos', videojuegoController.obtenerVideojuegos);
+router.get('/videojuegos/buscar', videojuegoController.buscarVideojuego);
 router.post('/videojuegos', videojuegoController.crearVideojuego);
 
 module.exports = router;

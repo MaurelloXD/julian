@@ -52,5 +52,25 @@ formAgregar.addEventListener('submit', async (evento) => {
   }
 });
 
+// --- Busqueda ---
+const formBuscar = document.getElementById('form-buscar');
+const resultadoBusqueda = document.getElementById('resultado-busqueda');
+
+formBuscar.addEventListener('submit', async (evento) => {
+  evento.preventDefault();
+  const nombre = document.getElementById('input-buscar').value;
+
+  const respuesta = await fetch(`/api/videojuegos/buscar?nombre=${encodeURIComponent(nombre)}`);
+  const datos = await respuesta.json();
+
+  if (datos.encontrado) {
+    resultadoBusqueda.textContent =
+      `Encontrado: ${datos.encontrado.nombre} - $${datos.encontrado.precio.toLocaleString('es-CO')} ` +
+      `(lineal: ${datos.comparaciones.lineal} comparaciones, binaria: ${datos.comparaciones.binaria} comparaciones)`;
+  } else {
+    resultadoBusqueda.textContent = 'No se encontro ese videojuego.';
+  }
+});
+
 // Al cargar la pagina por primera vez, pedimos los videojuegos.
 cargarVideojuegos();

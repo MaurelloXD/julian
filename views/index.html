@@ -11,22 +11,24 @@
   </header>
 
   <main>
-    <!--
-      NOTA PEDAGOGICA:
-      Esta lista todavia esta "quemada" (escrita a mano en el HTML).
-      Todavia no viene del servidor ni de ningun archivo de datos.
-      Eso es justamente lo que vamos a resolver en los siguientes commits
-      cuando conectemos esta Vista con el Modelo a traves del Controlador.
-    -->
-    <section id="lista-videojuegos">
+    <section id="seccion-lista">
       <h2>Videojuegos disponibles</h2>
-      <ul>
-        <li>Minecraft - $80.000</li>
-        <li>Mario Bros - $90.000</li>
-        <li>GTA V - $100.000</li>
-        <li>FIFA - $120.000</li>
-      </ul>
+      <!-- Esta lista ya no esta escrita a mano: la llena app.js con datos reales -->
+      <ul id="lista-videojuegos"></ul>
+    </section>
+
+    <section id="seccion-agregar">
+      <h2>Agregar videojuego</h2>
+      <form id="form-agregar">
+        <label>Nombre: <input type="text" id="input-nombre" required></label>
+        <label>Precio: <input type="number" id="input-precio" required></label>
+        <label>Categoria: <input type="text" id="input-categoria" required></label>
+        <button type="submit">Agregar</button>
+      </form>
+      <p id="mensaje-agregar"></p>
     </section>
   </main>
+
+  <script src="/js/app.js"></script>
 </body>
 </html>

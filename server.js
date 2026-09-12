@@ -5,14 +5,20 @@
 
 const express = require('express');
 const path = require('path');
+const videojuegoRoutes = require('./routes/videojuegoRoutes');
 
 const app = express();
 const PUERTO = 3000;
 
+// Permite que Express entienda peticiones con cuerpo en formato JSON (para POST)
+app.use(express.json());
+
 // Sirve los archivos publicos (CSS, JS del navegador) sin necesidad de rutas manuales
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Por ahora, una unica ruta de prueba para confirmar que el servidor responde
+// Todas las rutas de la API viven bajo el prefijo /api
+app.use('/api', videojuegoRoutes);
+
 app.get('/', (peticion, respuesta) => {
   respuesta.sendFile(path.join(__dirname, 'views', 'index.html'));
 });

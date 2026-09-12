@@ -79,9 +79,16 @@ function ordenarVideojuegos(peticion, respuesta) {
   respuesta.json(videojuegosOrdenados);
 }
 
+// GET /api/videojuegos/estadisticas
+function obtenerEstadisticas(peticion, respuesta) {
+  const estadisticas = videojuegoModel.calcularEstadisticas();
+  respuesta.json(estadisticas);
+}
+
 module.exports = {
   obtenerVideojuegos,
   crearVideojuego,
   buscarVideojuego,
-  ordenarVideojuegos
+  ordenarVideojuegos,
+  obtenerEstadisticas
 };

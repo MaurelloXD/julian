@@ -119,11 +119,41 @@ function ordenarPorPrecio(orden = 'asc') {
   return videojuegos;
 }
 
+// ALGORITMO DE PROCESAMIENTO Y AGREGACION
+// Recorre la coleccion UNA sola vez, acumulando total, y llevando el
+// registro del maximo y el minimo a medida que avanza. No hace falta
+// recorrer la lista varias veces para cada dato.
+function calcularEstadisticas() {
+  const videojuegos = obtenerTodos();
+
+  if (videojuegos.length === 0) {
+    return { cantidad: 0, promedio: 0, masCaro: null, masBarato: null };
+  }
+
+  let total = 0;
+  let masCaro = videojuegos[0];
+  let masBarato = videojuegos[0];
+
+  for (const videojuego of videojuegos) {
+    total += videojuego.precio;
+    if (videojuego.precio > masCaro.precio) masCaro = videojuego;
+    if (videojuego.precio < masBarato.precio) masBarato = videojuego;
+  }
+
+  return {
+    cantidad: videojuegos.length,
+    promedio: Math.round(total / videojuegos.length),
+    masCaro,
+    masBarato
+  };
+}
+
 module.exports = {
   obtenerTodos,
   guardarTodos,
   crear,
   buscarLineal,
   buscarBinaria,
-  ordenarPorPrecio
+  ordenarPorPrecio,
+  calcularEstadisticas
 };

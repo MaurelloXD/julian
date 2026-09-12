@@ -84,5 +84,22 @@ async function ordenarPorPrecio(orden) {
 document.getElementById('btn-orden-asc').addEventListener('click', () => ordenarPorPrecio('asc'));
 document.getElementById('btn-orden-desc').addEventListener('click', () => ordenarPorPrecio('desc'));
 
-// Al cargar la pagina por primera vez, pedimos los videojuegos.
+// --- Estadisticas ---
+async function cargarEstadisticas() {
+  const respuesta = await fetch('/api/videojuegos/estadisticas');
+  const stats = await respuesta.json();
+
+  const lista = document.getElementById('lista-estadisticas');
+  lista.innerHTML = `
+    <li>Cantidad de videojuegos: ${stats.cantidad}</li>
+    <li>Precio promedio: $${stats.promedio.toLocaleString('es-CO')}</li>
+    <li>Mas caro: ${stats.masCaro ? stats.masCaro.nombre : '-'}</li>
+    <li>Mas barato: ${stats.masBarato ? stats.masBarato.nombre : '-'}</li>
+  `;
+}
+
+document.getElementById('btn-cargar-estadisticas').addEventListener('click', cargarEstadisticas);
+
+// Al cargar la pagina por primera vez, pedimos los videojuegos y las estadisticas.
 cargarVideojuegos();
+cargarEstadisticas();

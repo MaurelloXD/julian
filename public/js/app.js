@@ -16,13 +16,37 @@ async function cargarVideojuegos() {
   renderizarVideojuegos(videojuegos);
 }
 
+// Cada categoria tiene su propio color, definido en el CSS. Esta funcion
+// solo traduce el nombre de la categoria a la variable de color correcta.
+function claseColorCategoria(categoria) {
+  const mapa = {
+    'Aventura': 'var(--cat-aventura)',
+    'Plataformas': 'var(--cat-plataformas)',
+    'Accion': 'var(--cat-accion)',
+    'Deportes': 'var(--cat-deportes)',
+    'Estrategia': 'var(--cat-estrategia)',
+    'Deportivo': 'var(--cat-deportivo)'
+  };
+  return mapa[categoria] || 'var(--cat-default)';
+}
+
 // Toma un arreglo de videojuegos y construye el HTML de la lista.
 function renderizarVideojuegos(videojuegos) {
   listaVideojuegos.innerHTML = '';
 
   videojuegos.forEach(videojuego => {
     const item = document.createElement('li');
-    item.textContent = `${videojuego.nombre} - $${videojuego.precio.toLocaleString('es-CO')} (${videojuego.categoria})`;
+
+    const textoJuego = document.createElement('span');
+    textoJuego.textContent = `${videojuego.nombre} - $${videojuego.precio.toLocaleString('es-CO')}`;
+
+    const badge = document.createElement('span');
+    badge.className = 'badge-categoria';
+    badge.textContent = videojuego.categoria;
+    badge.style.backgroundColor = claseColorCategoria(videojuego.categoria);
+
+    item.appendChild(textoJuego);
+    item.appendChild(badge);
     listaVideojuegos.appendChild(item);
   });
 }

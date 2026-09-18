@@ -12,6 +12,9 @@ router.get('/videojuegos', videojuegoController.obtenerVideojuegos);
 router.get('/videojuegos/buscar', videojuegoController.buscarVideojuego);
 router.get('/videojuegos/ordenar', videojuegoController.ordenarVideojuegos);
 router.get('/videojuegos/estadisticas', videojuegoController.obtenerEstadisticas);
+router.get('/categorias', videojuegoController.obtenerCategorias);
 router.post('/videojuegos', videojuegoController.crearVideojuego);
+router.put('/videojuegos/:id', videojuegoController.actualizarVideojuego);
+router.delete('/videojuegos/:id', videojuegoController.eliminarVideojuego);
 
 module.exports = router;

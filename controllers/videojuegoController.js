@@ -6,7 +6,7 @@
 // eso es trabajo del Model.
 
 const videojuegoModel = require('../models/videojuegoModel');
-const { validarVideojuego } = require('../validators/videojuegoValidator');
+const { validarVideojuego, CATEGORIAS_VALIDAS } = require('../validators/videojuegoValidator');
 
 // GET /api/videojuegos
 function obtenerVideojuegos(peticion, respuesta) {
@@ -71,10 +71,59 @@ function obtenerEstadisticas(peticion, respuesta) {
   respuesta.json(estadisticas);
 }
 
+// GET /api/categorias
+// El front-end pide aqui la lista de categorias validas, en vez de tenerla
+// escrita por su cuenta. Asi el formulario y el validador nunca se desincronizan:
+// hay una sola fuente de verdad (CATEGORIAS_VALIDAS, en el validador).
+function obtenerCategorias(peticion, respuesta) {
+  respuesta.json(CATEGORIAS_VALIDAS);
+}
+
+// PUT /api/videojuegos/:id
+// Actualiza un videojuego existente. Usa el MISMO validador que crear,
+// porque las reglas de negocio (nombre valido, precio positivo,
+// categoria con longitud razonable) son las mismas al crear o al editar.
+function actualizarVideojuego(peticion, respuesta) {
+  const { id } = peticion.params;
+  const { nombre, precio, categoria } = peticion.body;
+
+  const errores = validarVideojuego({ nombre, precio, categoria });
+  if (errores.length > 0) {
+    return respuesta.status(400).json({ errores });
+  }
+
+  const actualizado = videojuegoModel.actualizar(id, {
+    nombre,
+    precio: Number(precio),
+    categoria
+  });
+
+  if (!actualizado) {
+    return respuesta.status(404).json({ error: `No existe un videojuego con id ${id}.` });
+  }
+
+  respuesta.status(200).json(actualizado);
+}
+
+// DELETE /api/videojuegos/:id
+function eliminarVideojuego(peticion, respuesta) {
+  const { id } = peticion.params;
+  const eliminado = videojuegoModel.eliminar(id);
+
+  if (!eliminado) {
+    return respuesta.status(404).json({ error: `No existe un videojuego con id ${id}.` });
+  }
+
+  respuesta.status(200).json({ mensaje: `Videojuego ${id} eliminado.` });
+}
+
 module.exports = {
   obtenerVideojuegos,
   crearVideojuego,
+  actualizarVideojuego,
+  eliminarVideojuego,
   buscarVideojuego,
   ordenarVideojuegos,
-  obtenerEstadisticas
+  obtenerEstadisticas,
+  obtenerCategorias
 };

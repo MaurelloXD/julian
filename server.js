@@ -10,6 +10,16 @@ const videojuegoRoutes = require('./routes/videojuegoRoutes');
 const app = express();
 const PUERTO = 3000;
 
+// MIDDLEWARE DE REGISTRO (logging): se ejecuta ANTES que cualquier ruta,
+// para cada peticion que llegue. Esto es lo que hace visible, en la
+// terminal del servidor, el ciclo de peticion/respuesta HTTP en tiempo
+// real: cada clic en el navegador aparece aqui como una linea nueva.
+app.use((peticion, respuesta, siguiente) => {
+  const hora = new Date().toLocaleTimeString('es-CO', { hour12: false });
+  console.log(`[${hora}] ${peticion.method}  ${peticion.originalUrl}`);
+  siguiente();
+});
+
 // Permite que Express entienda peticiones con cuerpo en formato JSON (para POST)
 app.use(express.json());
 

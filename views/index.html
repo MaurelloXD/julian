@@ -12,42 +12,80 @@
 <body>
   <header>
     <h1>🎮 Tienda de Videojuegos</h1>
+    <p>La tienda de la izquierda es lo que ve cualquier persona. La sala de la derecha es lo que pasa por dentro.</p>
   </header>
 
   <main>
-    <section id="seccion-lista">
-      <h2>Videojuegos disponibles</h2>
-      <!-- Esta lista ya no esta escrita a mano: la llena app.js con datos reales -->
-      <ul id="lista-videojuegos"></ul>
-      <button id="btn-orden-asc">Ordenar por precio (menor a mayor)</button>
-      <button id="btn-orden-desc">Ordenar por precio (mayor a menor)</button>
-    </section>
+    <div class="columna-izquierda">
+      <section id="seccion-lista">
+        <h2>Videojuegos disponibles</h2>
+        <ul id="lista-videojuegos"></ul>
+        <div class="acciones-lista">
+          <button id="btn-orden-asc">Ordenar por precio ↑</button>
+          <button id="btn-orden-desc">Ordenar por precio ↓</button>
+          <button id="btn-ver-todos">Ver todos</button>
+        </div>
+      </section>
 
-    <section id="seccion-buscar">
-      <h2>Buscar videojuego</h2>
-      <form id="form-buscar">
-        <label>Nombre: <input type="text" id="input-buscar" required></label>
-        <button type="submit">Buscar</button>
-      </form>
-      <p id="resultado-busqueda"></p>
-    </section>
+      <section id="seccion-buscar">
+        <h2>Buscar videojuego</h2>
+        <form id="form-buscar">
+          <label>Nombre: <input type="text" id="input-buscar" placeholder="Ej: FIFA" required></label>
+          <button type="submit">Buscar</button>
+        </form>
+        <p id="resultado-busqueda"></p>
+      </section>
 
-    <section id="seccion-estadisticas">
-      <h2>Estadisticas</h2>
-      <button id="btn-cargar-estadisticas">Actualizar estadisticas</button>
-      <ul id="lista-estadisticas"></ul>
-    </section>
+      <section id="seccion-estadisticas">
+        <h2>Estadisticas</h2>
+        <button id="btn-cargar-estadisticas">Actualizar</button>
+        <div class="tarjetas-stats" id="tarjetas-stats" style="margin-top: 0.8rem;"></div>
+      </section>
 
-    <section id="seccion-agregar">
-      <h2>Agregar videojuego</h2>
-      <form id="form-agregar">
-        <label>Nombre: <input type="text" id="input-nombre" required></label>
-        <label>Precio: <input type="number" id="input-precio" required></label>
-        <label>Categoria: <input type="text" id="input-categoria" required></label>
-        <button type="submit">Agregar</button>
-      </form>
-      <p id="mensaje-agregar"></p>
-    </section>
+      <section id="seccion-agregar">
+        <h2 id="titulo-form-agregar">Agregar videojuego</h2>
+        <form id="form-agregar">
+          <label>Nombre: <input type="text" id="input-nombre" required></label>
+          <label>Precio: <input type="number" id="input-precio" required></label>
+          <label>Categoria: <select id="input-categoria" required>
+              <option value="">Cargando categorias...</option>
+            </select></label>
+          <label id="label-otra-categoria" style="display: none;">Especifica la categoria: <input type="text"
+              id="input-otra-categoria"></label>
+          <button type="submit" id="btn-submit-agregar">Agregar</button>
+          <button type="button" id="btn-cancelar-edicion"
+            style="display:none; background:var(--borde); color:var(--texto);">Cancelar</button>
+        </form>
+        <p id="mensaje-agregar"></p>
+      </section>
+    </div>
+
+    <aside id="sala-maquinas">
+      <section>
+        <h2>🔍 Sala de máquinas</h2>
+
+        <div class="tabs-sala">
+          <button class="tab-sala activa" data-tab="restaurante">Restaurante</button>
+          <button class="tab-sala" data-tab="tecnico">Técnico (MVC)</button>
+          <button class="tab-sala" data-tab="json">JSON crudo</button>
+        </div>
+
+        <div class="actores-fila" id="actores-fila"></div>
+        <div class="descripcion-actor" id="descripcion-actor">Haz clic en un personaje para ver su rol.</div>
+
+        <div class="bitacora-titulo">Bitácora de la última acción</div>
+        <ul id="lista-pasos">
+          <li class="paso-vacio">Todavía no has hecho ninguna acción. Busca, ordena o agrega un videojuego para ver los
+            pasos aquí.</li>
+        </ul>
+
+        <pre id="json-crudo" style="display:none;"></pre>
+        <span class="abrir-json" id="abrir-json" style="display:none;">Abrir esta respuesta en una pestaña nueva
+          ↗</span>
+
+        <div id="log-terminal"></div>
+      </section>
+    </aside>
   </main>
 
   <script src="/js/app.js"></script>

@@ -136,9 +136,55 @@ function calcularEstadisticas() {
   };
 }
 
+// Busca un videojuego por id. Devuelve el objeto o null si no existe.
+function obtenerPorId(id) {
+  const videojuegos = obtenerTodos();
+  return videojuegos.find(v => v.id === Number(id)) || null;
+}
+
+// ACTUALIZAR (PUT): reemplaza nombre, precio y categoria de un
+// videojuego existente. Devuelve el videojuego actualizado, o null
+// si no existe ningun videojuego con ese id.
+function actualizar(id, datosNuevos) {
+  const videojuegos = obtenerTodos();
+  const indice = videojuegos.findIndex(v => v.id === Number(id));
+
+  if (indice === -1) {
+    return null;
+  }
+
+  videojuegos[indice] = {
+    id: videojuegos[indice].id,
+    nombre: datosNuevos.nombre,
+    precio: datosNuevos.precio,
+    categoria: datosNuevos.categoria
+  };
+
+  videojuegoRepository.guardarTodos(videojuegos);
+  return videojuegos[indice];
+}
+
+// ELIMINAR (DELETE): quita un videojuego de la coleccion por id.
+// Devuelve true si lo elimino, false si no existia ese id.
+function eliminar(id) {
+  const videojuegos = obtenerTodos();
+  const cantidadOriginal = videojuegos.length;
+  const videojuegosFiltrados = videojuegos.filter(v => v.id !== Number(id));
+
+  if (videojuegosFiltrados.length === cantidadOriginal) {
+    return false; // no se encontro ese id, nada que eliminar
+  }
+
+  videojuegoRepository.guardarTodos(videojuegosFiltrados);
+  return true;
+}
+
 module.exports = {
   obtenerTodos,
+  obtenerPorId,
   crear,
+  actualizar,
+  eliminar,
   buscarLineal,
   buscarBinaria,
   ordenarPorPrecio,
